@@ -4,14 +4,26 @@ const onClickAdd = () => {
   //テキストボックスの値を取得し、初期化する
   const inputText = document.getElementById("add-text").value;
   document.getElementById("add-text").value = "";
+  createIncompliteList(inputText);
+};
 
+document
+  .getElementById("add-button")
+  .addEventListener("click", () => onClickAdd());
+
+//未完了リストから指定の要素を削除
+const deliteFromIncompliteList = (target) => {
+  document.getElementById("incomplite-list").removeChild(target);
+};
+
+const createIncompliteList = (innerText) => {
   //div生成
   const div = document.createElement("div");
   div.className = "list-row";
 
   // liタグ生成
   const li = document.createElement("li");
-  li.innerText = inputText;
+  li.innerText = innerText;
 
   //未完了リストに追加
   document.getElementById("incomplite-list").appendChild(div);
@@ -34,6 +46,15 @@ const onClickAdd = () => {
     //buttonタグ生成
     const backButton = document.createElement("button");
     backButton.innerText = "戻す";
+    backButton.addEventListener("click", () => {
+      //押された戻すボタンの親タグ(div)を完了したリストから削除
+      const deleteTarget = backButton.parentNode;
+      document.getElementById("complite-list").removeChild(deleteTarget);
+      //テキスト取得
+      const text = backButton.parentNode.firstElementChild.innerText;
+      //未完了リストに追加
+      createIncompliteList(text);
+    });
     //divタグの子要素に各要素を設定
     addTarget.appendChild(li);
     addTarget.appendChild(backButton);
@@ -53,13 +74,4 @@ const onClickAdd = () => {
   div.appendChild(li);
   div.appendChild(compliteButton);
   div.appendChild(deliteButton);
-};
-
-document
-  .getElementById("add-button")
-  .addEventListener("click", () => onClickAdd());
-
-//未完了リストから指定の要素を削除
-const deliteFromIncompliteList = (target) => {
-  document.getElementById("incomplite-list").removeChild(target);
 };
